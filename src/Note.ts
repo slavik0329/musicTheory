@@ -19,7 +19,10 @@ type ChordTypeConfig = {
   intervals: number[];
 };
 
-type ScaleType = "Major" | "Minor" | "Pentatonic_Major";
+export type ScaleType = "Major" | "Minor" | "Pentatonic_Major";
+export type ChordType = "Minor" | "Major" | "Diminished";
+export const allScales: ScaleType[] = ["Major", "Minor", "Pentatonic_Major"];
+export const allChords: ChordType[] = ["Major", "Minor", "Diminished"];
 
 type ScaleConfig = {
   type: ScaleType;
@@ -82,8 +85,6 @@ for (let i = 0; i < 9; i++) {
 }
 
 const naturallySharpableTones: SharpableTone[] = ["A", "C", "D", "F", "G"];
-
-type ChordType = "Minor" | "Major" | "Diminished";
 
 export function playPCMData(tone: number[]): Promise<void> {
   return new Promise((resolve) => {
