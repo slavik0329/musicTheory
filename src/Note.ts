@@ -9,7 +9,10 @@ import {
   VirtualTone,
 } from "./types.js";
 import { ToneGenerator } from "./ToneGenerator";
-import { playPCMWeb } from "./utils";
+// @ts-ignore
+import header from "waveheader";
+
+import { Buffer } from "buffer/";
 
 const SAMPLING_RATE = 44100;
 const allTones: Tone[] = ["A", "B", "C", "D", "E", "F", "G"];
@@ -105,12 +108,23 @@ for (let i = 0; i < 9; i++) {
 const naturallySharpableTones: SharpableTone[] = ["A", "C", "D", "F", "G"];
 
 export function playPCMData(tone: number[]): Promise<void> {
-  return new Promise(async (resolve) => {
-    const data = Float32Array.from(tone, function (val) {
-      return val;
+  return new Promise((resolve) => {
+    const headerBuffer = header(tone.length, {
+      bitDepth: 8,
+      sampleRate: SAMPLING_RATE * 8,
     });
 
-    await playPCMWeb(data);
+    const data = Uint8Array.from(tone, function (val) {
+      return val + 128;
+    });
+
+    const dataBuffer = Buffer.from(data);
+    const buffer = Buffer.concat([headerBuffer, dataBuffer]);
+    const base64Url = "data:audio/wav;base64," + buffer.toString("base64");
+    const audio = new Audio(base64Url);
+    audio.play();
+    const totalLengthSecs = tone.length / SAMPLING_RATE;
+    setTimeout(resolve, totalLengthSecs * 1000);
   });
 }
 
@@ -160,9 +174,9 @@ export class Note {
     return halfTone.includes("b");
   }
 
-  createAudioTone(lengthInSecs = 0.3, volume = 10): number[] {
+  createAudioTone(lengthInSecs = 0.3, volume = 30): number[] {
     return ToneGenerator({
-      freq: this.getFrequency() * 4,
+      freq: this.getFrequency(),
       lengthInSecs,
       volume,
       shape: "sine",

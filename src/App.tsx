@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import React, { useState } from "react";
 import "./App.css";
 import styled from "styled-components";
@@ -5,6 +6,7 @@ import { allHalfTones, allScales, Note } from "./Note";
 import { theme } from "./theme";
 import { HalfTone } from "./types";
 import { Guitar } from "./Guitar";
+global.Buffer = Buffer;
 
 const Outer = styled.div`
   max-width: 1200px;
