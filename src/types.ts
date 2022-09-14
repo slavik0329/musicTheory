@@ -24,3 +24,7 @@ export const HalfToneTypeValidator = z.union([
 ]);
 export const AccidentalValidator = z.union([z.literal("#"), z.literal("b")]);
 export type Accidental = z.infer<typeof AccidentalValidator>;
+export type TuningItem = {
+  tone: HalfTone;
+  octave: number;
+};

@@ -111,7 +111,7 @@ export function playPCMData(tone: number[]): Promise<void> {
   return new Promise((resolve) => {
     const headerBuffer = header(tone.length, {
       bitDepth: 8,
-      sampleRate: SAMPLING_RATE * 8,
+      sampleRate: SAMPLING_RATE,
     });
 
     const data = Uint8Array.from(tone, function (val) {
@@ -258,10 +258,20 @@ export class Note {
   }
 
   /** Returns new Note (halfTone) with given relative adjustment */
-  getRelativeHalfTone(number: number): Note {
-    const newHalfTone = this.getRelativeHalfToneName(number);
+  getRelativeHalfTone(number: number, withOctave?: boolean): Note {
+    const newHalfTone = this.getRelativeHalfToneName(number, undefined);
 
-    return new Note(newHalfTone, this.octave);
+    const currentHalfToneIndex = allHalfTones.indexOf(
+      this.getRealHalfToneName()
+    );
+
+    let octavesMoved = 0;
+
+    if (currentHalfToneIndex + number >= allHalfTones.length) {
+      octavesMoved = Math.ceil(number / 12);
+    }
+
+    return new Note(newHalfTone, this.octave + octavesMoved);
   }
 
   private getRelativeHalfToneName(
@@ -294,25 +304,6 @@ export class Note {
     }
 
     return Note.combineNote(realTone, realAccidental);
-  }
-
-  createAllTriads() {
-    return {
-      Major: this.createTriad("Major"),
-      Minor: this.createTriad("Minor"),
-      Diminished: this.createTriad("Diminished"),
-    };
-  }
-
-  displayAllTriads() {
-    const chordTypes: ChordType[] = ["Major", "Minor", "Diminished"];
-
-    const triads = this.createAllTriads();
-
-    chordTypes.forEach((chordType) => {
-      console.log(`----${chordType} ${this.tone}----`);
-      triads[chordType].display();
-    });
   }
 
   createScale(type: ScaleType): Chord {

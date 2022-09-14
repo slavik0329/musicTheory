@@ -70,12 +70,12 @@ export function Guitar({ showOnlyNotes }: Props) {
         <String key={stringIndex}>
           {string.notes.map((note, i) =>
             i === 0 ? (
-              <NoteName onClick={() => note.playAudio(1)}>
+              <NoteName onClick={() => note.playAudio(0.3)}>
                 {note.getRealHalfToneName()}
               </NoteName>
             ) : (
               <Fret
-                onClick={() => note.playAudio(1)}
+                onClick={() => note.playAudio(0.3)}
                 note={note}
                 hide={
                   !!showOnlyNotes &&

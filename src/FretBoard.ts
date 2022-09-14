@@ -1,11 +1,11 @@
 import { allHalfTones, Note } from "./Note";
-import { HalfTone } from "./types";
+import { HalfTone, TuningItem } from "./types";
 
 export class GuitarString {
   public notes: Note[];
 
-  constructor(stringHalfTone: HalfTone) {
-    const rootNote = new Note(stringHalfTone, 1);
+  constructor(tuningItem: TuningItem) {
+    const rootNote = new Note(tuningItem.tone, tuningItem.octave);
     this.notes = [rootNote];
 
     for (let i = 1; i < allHalfTones.length + 1; i++) {
@@ -42,7 +42,32 @@ export class FretBoard {
   public strings: GuitarString[];
 
   constructor() {
-    const standardTuning: HalfTone[] = ["E", "B", "G", "D", "A", "E"];
+    const standardTuning: TuningItem[] = [
+      {
+        tone: "E",
+        octave: 4,
+      },
+      {
+        tone: "B",
+        octave: 4,
+      },
+      {
+        tone: "G",
+        octave: 4,
+      },
+      {
+        tone: "D",
+        octave: 4,
+      },
+      {
+        tone: "A",
+        octave: 4,
+      },
+      {
+        tone: "E",
+        octave: 3,
+      },
+    ];
 
     this.strings = standardTuning.map((str) => new GuitarString(str));
   }
