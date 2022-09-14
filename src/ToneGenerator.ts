@@ -67,7 +67,7 @@ function generateWaveForm(opts: Options) {
   const freq = opts.freq || 440;
   const rate = opts.rate || 44100;
   const lengthInSecs = opts.lengthInSecs || 2.0;
-  const volume = opts.volume || 30;
+  const volume = opts.volume || 10;
   const shape = opts.shape || "sine";
 
   const cycle = Math.floor(rate / freq);

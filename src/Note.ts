@@ -20,9 +20,19 @@ type ChordTypeConfig = {
   intervals: number[];
 };
 
-export type ScaleType = "Major" | "Minor" | "Pentatonic_Major";
+export type ScaleType =
+  | "Major"
+  | "Minor"
+  | "Pentatonic_Major"
+  | "Pentatonic_Minor";
 export type ChordType = "Minor" | "Major" | "Diminished";
-export const allScales: ScaleType[] = ["Major", "Minor", "Pentatonic_Major"];
+export const allScales: ScaleType[] = [
+  "Major",
+  "Minor",
+  "Pentatonic_Major",
+  "Pentatonic_Minor",
+];
+
 export const allChords: ChordType[] = ["Major", "Minor", "Diminished"];
 
 type ScaleConfig = {
@@ -40,8 +50,15 @@ export const scaleConfigs: ScaleConfig[] = [
     intervals: [0, 2, 3, 5, 7, 8, 10],
   },
   {
+    // R, M2, M3, P5, M6
     type: "Pentatonic_Major",
     intervals: [0, 2, 4, 7, 9],
+  },
+  {
+    type: "Pentatonic_Minor",
+
+    // R, m3, P4, P5, m7
+    intervals: [0, 3, 5, 7, 10],
   },
 ];
 
@@ -143,7 +160,7 @@ export class Note {
     return halfTone.includes("b");
   }
 
-  createAudioTone(lengthInSecs = 0.3, volume = 30): number[] {
+  createAudioTone(lengthInSecs = 0.3, volume = 10): number[] {
     return ToneGenerator({
       freq: this.getFrequency() * 4,
       lengthInSecs,

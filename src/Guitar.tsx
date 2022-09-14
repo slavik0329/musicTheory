@@ -16,6 +16,8 @@ const String = styled.div`
 
 const Anchors = styled.div`
   display: flex;
+  margin-top: 4px;
+  margin-left: 20px;
 `;
 
 const Dot = styled.div`
@@ -23,7 +25,17 @@ const Dot = styled.div`
   height: 14px;
   border-radius: 30px;
   margin: 0 4px;
-  background-color: ${theme.primary["orange-vivid-900"]};
+  background-color: ${theme.primary["orange-vivid-200"]};
+`;
+
+const NoteName = styled.div`
+  position: relative;
+  text-align: left;
+  cursor: pointer;
+  z-index: 2;
+  color: ${theme.primary["indigo-600"]};
+  font-weight: bold;
+  width: 20px;
 `;
 
 const Anchor = styled.div`
@@ -56,16 +68,22 @@ export function Guitar({ showOnlyNotes }: Props) {
     <Container>
       {fretboard.strings.map((string, stringIndex) => (
         <String key={stringIndex}>
-          {string.notes.map((note) => (
-            <Fret
-              onClick={() => note.playAudio(1)}
-              note={note}
-              hide={
-                !!showOnlyNotes &&
-                !showOnlyNotes.includes(note.getRealHalfToneName())
-              }
-            />
-          ))}
+          {string.notes.map((note, i) =>
+            i === 0 ? (
+              <NoteName onClick={() => note.playAudio(1)}>
+                {note.getRealHalfToneName()}
+              </NoteName>
+            ) : (
+              <Fret
+                onClick={() => note.playAudio(1)}
+                note={note}
+                hide={
+                  !!showOnlyNotes &&
+                  !showOnlyNotes.includes(note.getRealHalfToneName())
+                }
+              />
+            )
+          )}
         </String>
       ))}
 
