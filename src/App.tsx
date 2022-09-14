@@ -2,7 +2,7 @@ import { Buffer } from "buffer";
 import React, { useState } from "react";
 import "./App.css";
 import styled from "styled-components";
-import { allHalfTones, allScales, Note } from "./Note";
+import { allChords, allHalfTones, allScales, Note } from "./Note";
 import { theme } from "./theme";
 import { HalfTone } from "./types";
 import { Guitar } from "./Guitar";
@@ -14,6 +14,14 @@ const Outer = styled.div`
   border: 1px solid ${theme.neutrals["cool-grey-200"]};
   padding: 20px;
 `;
+
+const ChordContainer = styled.div`
+  display: flex;
+`;
+const Left = styled.div`
+  margin-right: 20px;
+`;
+const Right = styled.div``;
 
 type SelectedType = {
   selected: boolean;
@@ -95,26 +103,56 @@ function App() {
         ))}
       </ToneBar>
 
-      {allScales.map((scaleType) => (
-        <Block
-          onClick={() =>
-            setShowOnlyNotes(
-              note
-                .createScale(scaleType)
-                .notes.map((note) => note.getRealHalfToneName())
-            )
-          }
-        >
-          <Title>
-            "{selectedHalfTone}" {scaleType.replace("_", " ")} Scale
-          </Title>
-          <NoteBox>
-            {note.createScale(scaleType).notes.map((scaleItem, i) => (
-              <ScaleItem key={i}>{scaleItem.getRealHalfToneName()}</ScaleItem>
-            ))}
-          </NoteBox>
-        </Block>
-      ))}
+      <ChordContainer>
+        <Left>
+          {allChords.map((chordType) => (
+            <Block
+              onClick={() =>
+                setShowOnlyNotes(
+                  note
+                    .createChord(chordType)
+                    .notes.map((note) => note.getRealHalfToneName())
+                )
+              }
+            >
+              <Title>
+                "{selectedHalfTone}" {chordType.replace("_", " ")} Chord
+              </Title>
+              <NoteBox>
+                {note.createChord(chordType).notes.map((scaleItem, i) => (
+                  <ScaleItem key={i}>
+                    {scaleItem.getRealHalfToneName()}
+                  </ScaleItem>
+                ))}
+              </NoteBox>
+            </Block>
+          ))}
+        </Left>
+        <Right>
+          {allScales.map((scaleType) => (
+            <Block
+              onClick={() =>
+                setShowOnlyNotes(
+                  note
+                    .createScale(scaleType)
+                    .notes.map((note) => note.getRealHalfToneName())
+                )
+              }
+            >
+              <Title>
+                "{selectedHalfTone}" {scaleType.replace("_", " ")} Scale
+              </Title>
+              <NoteBox>
+                {note.createScale(scaleType).notes.map((scaleItem, i) => (
+                  <ScaleItem key={i}>
+                    {scaleItem.getRealHalfToneName()}
+                  </ScaleItem>
+                ))}
+              </NoteBox>
+            </Block>
+          ))}
+        </Right>
+      </ChordContainer>
 
       <Guitar showOnlyNotes={showOnlyNotes} />
     </Outer>
