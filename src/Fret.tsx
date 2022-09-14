@@ -3,6 +3,14 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "./theme";
 
+const FretContainer = styled.div`
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  width: 60px;
+  height: 20px;
+`;
+
 const StringLine = styled.div`
   position: absolute;
   top: 8px;
@@ -34,13 +42,6 @@ const StringEndCap = styled.div`
   z-index: 1;
 `;
 
-const FretContainer = styled.div`
-  position: relative;
-  text-align: center;
-  width: 60px;
-  height: 20px;
-`;
-
 const NoteName = styled.div`
   position: relative;
   text-align: center;
@@ -49,9 +50,11 @@ const NoteName = styled.div`
   font-weight: bold;
 `;
 
-export function Fret({ note, hide }: { note: Note; hide: boolean }) {
+type Props = { note: Note; hide: boolean; onClick: () => void };
+
+export function Fret({ note, hide, onClick }: Props) {
   return (
-    <FretContainer>
+    <FretContainer onClick={onClick}>
       <StringLine />
       <StringStartCap />
       <StringEndCap />

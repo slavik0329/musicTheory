@@ -9,6 +9,7 @@ import {
   VirtualTone,
 } from "./types.js";
 import { ToneGenerator } from "./ToneGenerator";
+import { playPCMWeb } from "./utils";
 
 const SAMPLING_RATE = 44100;
 const allTones: Tone[] = ["A", "B", "C", "D", "E", "F", "G"];
@@ -87,19 +88,12 @@ for (let i = 0; i < 9; i++) {
 const naturallySharpableTones: SharpableTone[] = ["A", "C", "D", "F", "G"];
 
 export function playPCMData(tone: number[]): Promise<void> {
-  return new Promise((resolve) => {
-    const data = Uint8Array.from(tone, function (val) {
-      return val + 128;
+  return new Promise(async (resolve) => {
+    const data = Float32Array.from(tone, function (val) {
+      return val;
     });
 
-    let buffer: Buffer;
-
-    if (Buffer.from) {
-      // Node 5+
-      buffer = Buffer.from(data);
-    } else {
-      buffer = new Buffer(data);
-    }
+    await playPCMWeb(data);
   });
 }
 
@@ -151,7 +145,7 @@ export class Note {
 
   createAudioTone(lengthInSecs = 0.3, volume = 30): number[] {
     return ToneGenerator({
-      freq: this.getFrequency(),
+      freq: this.getFrequency() * 4,
       lengthInSecs,
       volume,
       shape: "sine",
@@ -160,6 +154,7 @@ export class Note {
 
   async playAudio(lengthInSecs: number): Promise<void> {
     const tone = this.createAudioTone(lengthInSecs);
+    console.log({ tone });
     await playPCMData(tone);
   }
 

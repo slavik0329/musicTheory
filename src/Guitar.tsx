@@ -58,6 +58,7 @@ export function Guitar({ showOnlyNotes }: Props) {
         <String key={stringIndex}>
           {string.notes.map((note) => (
             <Fret
+              onClick={() => note.playAudio(1)}
               note={note}
               hide={
                 !!showOnlyNotes &&
