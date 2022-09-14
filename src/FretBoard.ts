@@ -49,23 +49,23 @@ export class FretBoard {
       },
       {
         tone: "B",
-        octave: 4,
+        octave: 3,
       },
       {
         tone: "G",
-        octave: 4,
+        octave: 3,
       },
       {
         tone: "D",
-        octave: 4,
+        octave: 3,
       },
       {
         tone: "A",
-        octave: 4,
+        octave: 2,
       },
       {
         tone: "E",
-        octave: 3,
+        octave: 2,
       },
     ];
 

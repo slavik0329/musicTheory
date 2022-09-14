@@ -119,9 +119,9 @@ function App() {
                 "{selectedHalfTone}" {chordType.replace("_", " ")} Chord
               </Title>
               <NoteBox>
-                {note.createChord(chordType).notes.map((scaleItem, i) => (
+                {note.createTriad(chordType).notes.map((chordItem, i) => (
                   <ScaleItem key={i}>
-                    {scaleItem.getRealHalfToneName()}
+                    {chordItem.getVirtualHalfToneName()}
                   </ScaleItem>
                 ))}
               </NoteBox>
