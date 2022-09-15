@@ -364,7 +364,7 @@ export class Note {
     const seventhTone = first.getRelativeTone(6);
 
     const relativeThirdHalfToneName = this.getRelativeHalfToneName(
-      type === "Minor" || type === "Diminished" ? 3 : 4,
+      type === "Minor" || type === "Diminished" || type === "Minor_7" ? 3 : 4,
       thirdTone
     );
     const relativeFifthHalfToneName = this.getRelativeHalfToneName(
@@ -373,7 +373,7 @@ export class Note {
     );
 
     const relativeSeventhHalfToneName = this.getRelativeHalfToneName(
-      11,
+      type === "Minor_7" ? 10 : 11,
       seventhTone
     );
 
@@ -383,7 +383,7 @@ export class Note {
 
     let notes = [first, third, fifth];
 
-    if (type === "Major_7") {
+    if (["Major_7", "Minor_7"].includes(type)) {
       notes.push(seventh);
     }
 
