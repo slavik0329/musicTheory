@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "./theme";
 import { FretBoard } from "./FretBoard";
 import { HalfTone } from "./types";
 import { Fret } from "./Fret";
-import { allHalfTones } from "./Note";
+import { allHalfTones, Note } from "./Note";
 
 const Container = styled.div`
   display: inline-block;
@@ -25,6 +25,7 @@ const Nut = styled.div`
 
 const Outer = styled.div`
   margin-top: 20px;
+  user-select: none;
 `;
 
 const String = styled.div`
@@ -45,14 +46,19 @@ const Dot = styled.div`
   background-color: ${theme.primary["orange-vivid-200"]};
 `;
 
-const NoteName = styled.div`
+type NoteProps = {
+  isPlaying: boolean;
+};
+
+const NoteName = styled.div<NoteProps>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   z-index: 2;
   text-align: center;
-  color: #fff;
+  color: ${({ isPlaying }) =>
+    isPlaying ? theme.primary["orange-vivid-400"] : "#FFF"};
   font-weight: bold;
   font-size: 14px;
   width: 20px;
@@ -71,6 +77,23 @@ const Anchor = styled.div`
 type Props = {
   showOnlyNotes?: HalfTone[];
 };
+
+function NutNote({ note }: { note: Note }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
+    <NoteName
+      isPlaying={isPlaying}
+      onClick={async () => {
+        setIsPlaying(true);
+        await note.playAudio(0.3);
+        setIsPlaying(false);
+      }}
+    >
+      {note.getRealHalfToneName()}
+    </NoteName>
+  );
+}
 
 export function Guitar({ showOnlyNotes }: Props) {
   const fretboard = new FretBoard();
@@ -92,12 +115,7 @@ export function Guitar({ showOnlyNotes }: Props) {
       <FretboardContainer>
         <Nut>
           {fretboard.strings.map((string, index) => (
-            <NoteName
-              onClick={() => string.notes[0].playAudio(0.3)}
-              key={index}
-            >
-              {string.notes[0].getRealHalfToneName()}
-            </NoteName>
+            <NutNote key={index} note={string.notes[0]} />
           ))}
         </Nut>
         <Container>

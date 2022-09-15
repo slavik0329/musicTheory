@@ -9,6 +9,7 @@ const FretContainer = styled.div`
   text-align: center;
   width: 60px;
   height: 26px;
+  user-select: none;
 `;
 
 type LineProps = {
@@ -18,7 +19,9 @@ type LineProps = {
 const StringLine = styled.div<LineProps>`
   position: absolute;
   background: ${({ isPlaying }) =>
-    isPlaying ? `linear-gradient(#F00, #00F)` : `linear-gradient(#eee, #999);`};
+    isPlaying
+      ? `linear-gradient(${theme.primary["orange-vivid-400"]}, ${theme.primary["orange-vivid-400"]})`
+      : `linear-gradient(#eee, #999);`};
   box-shadow: 0 3px 10px #806233;
   top: 8px;
   width: 100%;
@@ -33,7 +36,7 @@ const StringStartCap = styled.div`
   left: 0;
   width: 4px;
   height: 3px;
-  background-color: ${theme.supporting["yellow-vivid-800"]};
+  background-color: ${theme.supporting["yellow-vivid-100"]};
   display: flex;
   z-index: 3;
 `;
@@ -57,7 +60,7 @@ const NoteName = styled.div<LineProps>`
   z-index: 2;
   background-color: ${({ isPlaying }) =>
     isPlaying
-      ? theme.primary["orange-vivid-900"]
+      ? theme.primary["orange-vivid-400"]
       : theme.neutrals["cool-grey-700"]};
   text-align: center;
   color: #fff;
