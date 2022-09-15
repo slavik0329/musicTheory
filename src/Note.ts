@@ -31,7 +31,8 @@ export type ChordType =
   | "Minor_Seventh"
   | "Dominant_Seventh"
   | "Sus_2"
-  | "Sus_4";
+  | "Sus_4"
+  | "Augmented";
 
 export type ScaleType =
   | "Major"
@@ -104,6 +105,10 @@ export const chordTypeConfigs: ChordTypeConfig[] = [
   {
     type: "Sus_4",
     intervals: [0, 5, 7],
+  },
+  {
+    type: "Augmented",
+    intervals: [0, 4, 8],
   },
 ];
 
@@ -334,8 +339,11 @@ export class Note {
         const realToneIndex = allHalfTones.indexOf(realTone);
         const difference = realToneIndex - forceToneIndex;
         if (difference < 0) {
+          if (["E", "B"].includes(realTone)) {
+          } else {
+            realAccidental = "b";
+          }
           realTone = forceTone;
-          realAccidental = "b";
         }
       }
     }
@@ -370,7 +378,7 @@ export class Note {
   createTriad(type: ChordType): Chord {
     const first = new Note(this.getRealHalfToneName(), this.octave);
     const thirdTone = first.getRelativeTone(
-      type === "Sus_2" ? 1 : type === "Sus_4" ? 3 : 2
+      type === "Sus_2" ? 1 : type === "Sus_4" || type === "Augmented" ? 3 : 2
     );
     const fifthTone = first.getRelativeTone(4);
     const seventhTone = first.getRelativeTone(6);
