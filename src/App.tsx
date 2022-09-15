@@ -58,7 +58,7 @@ const ToneBar = styled.div`
 const Title = styled.div`
   color: ${theme.neutrals["cool-grey-600"]};
   font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
   margin-top: 20px;
   cursor: pointer;
 `;
@@ -74,7 +74,7 @@ const ScaleItem = styled.div`
   display: inline-flex;
   align-items: center;
   width: 50px;
-  height: 40px;
+  height: 28px;
   color: ${theme.neutrals["cool-grey-500"]};
 `;
 
