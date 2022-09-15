@@ -27,15 +27,11 @@ export type ChordType =
   | "Minor"
   | "Major"
   | "Diminished"
-  | "Major_7"
-  | "Minor_7";
-export const allChords: ChordType[] = [
-  "Major",
-  "Major_7",
-  "Minor",
-  "Minor_7",
-  "Diminished",
-];
+  | "Major_Seventh"
+  | "Minor_Seventh"
+  | "Dominant_Seventh"
+  | "Sus_2"
+  | "Sus_4";
 
 export type ScaleType =
   | "Major"
@@ -82,7 +78,7 @@ export const chordTypeConfigs: ChordTypeConfig[] = [
     intervals: [0, 4, 7],
   },
   {
-    type: "Major_7",
+    type: "Major_Seventh",
     intervals: [0, 4, 7, 11],
   },
   {
@@ -90,14 +86,28 @@ export const chordTypeConfigs: ChordTypeConfig[] = [
     intervals: [0, 3, 7],
   },
   {
-    type: "Minor_7",
+    type: "Minor_Seventh",
     intervals: [0, 3, 7, 10],
   },
   {
     type: "Diminished",
     intervals: [0, 3, 6],
   },
+  {
+    type: "Dominant_Seventh",
+    intervals: [0, 4, 7, 10],
+  },
+  {
+    type: "Sus_2",
+    intervals: [0, 2, 7],
+  },
+  {
+    type: "Sus_4",
+    intervals: [0, 5, 7],
+  },
 ];
+
+export const allChords = chordTypeConfigs.map((config) => config.type);
 
 export const allHalfTones: HalfTone[] = [
   "C",
@@ -359,31 +369,37 @@ export class Note {
 
   createTriad(type: ChordType): Chord {
     const first = new Note(this.getRealHalfToneName(), this.octave);
-    const thirdTone = first.getRelativeTone(2);
+    const thirdTone = first.getRelativeTone(
+      type === "Sus_2" ? 1 : type === "Sus_4" ? 3 : 2
+    );
     const fifthTone = first.getRelativeTone(4);
     const seventhTone = first.getRelativeTone(6);
 
+    const config = chordTypeConfigs.find(
+      (chord) => chord.type === type
+    ) as ChordTypeConfig;
+
     const relativeThirdHalfToneName = this.getRelativeHalfToneName(
-      type === "Minor" || type === "Diminished" || type === "Minor_7" ? 3 : 4,
+      config.intervals[1],
       thirdTone
     );
     const relativeFifthHalfToneName = this.getRelativeHalfToneName(
-      type === "Diminished" ? 6 : 7,
+      config.intervals[2],
       fifthTone
-    );
-
-    const relativeSeventhHalfToneName = this.getRelativeHalfToneName(
-      type === "Minor_7" ? 10 : 11,
-      seventhTone
     );
 
     const third = new Note(relativeThirdHalfToneName, this.octave);
     const fifth = new Note(relativeFifthHalfToneName, this.octave);
-    const seventh = new Note(relativeSeventhHalfToneName, this.octave);
 
     let notes = [first, third, fifth];
 
-    if (["Major_7", "Minor_7"].includes(type)) {
+    if (config.intervals.length > 3) {
+      const relativeSeventhHalfToneName = this.getRelativeHalfToneName(
+        config.intervals[3],
+        seventhTone
+      );
+
+      const seventh = new Note(relativeSeventhHalfToneName, this.octave);
       notes.push(seventh);
     }
 
