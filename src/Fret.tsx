@@ -76,12 +76,21 @@ type Props = { note: Note; hide: boolean };
 export function Fret({ note, hide }: Props) {
   const [isPlaying, setIsPlaying] = useState(false);
 
+  async function play() {
+    setIsPlaying(true);
+    await note.playAudio(0.3);
+    setIsPlaying(false);
+  }
+
   return (
     <FretContainer
-      onMouseDown={async () => {
-        setIsPlaying(true);
-        await note.playAudio(0.3);
-        setIsPlaying(false);
+      onClick={async () => {
+        await play();
+      }}
+      onMouseOver={async (event) => {
+        if (event.buttons === 1) {
+          await play();
+        }
       }}
     >
       <StringLine isPlaying={isPlaying} />

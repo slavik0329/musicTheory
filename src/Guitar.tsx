@@ -34,7 +34,7 @@ const String = styled.div`
 
 const Anchors = styled.div`
   display: flex;
-  margin-top: 4px;
+  margin-top: 6px;
   margin-left: 28px;
 `;
 
@@ -42,7 +42,7 @@ const Dot = styled.div`
   width: 14px;
   height: 14px;
   border-radius: 30px;
-  margin: 0 4px;
+  margin: 0 6px;
   background-color: ${theme.primary["orange-vivid-200"]};
 `;
 
@@ -74,6 +74,22 @@ const Anchor = styled.div`
   width: 60px;
 `;
 
+const Numbering = styled.div`
+  display: flex;
+  margin-left: 30px;
+  align-items: center;
+  margin-bottom: 6px;
+`;
+
+const Number = styled.div`
+  display: flex;
+  width: 60px;
+  color: ${theme.neutrals["cool-grey-300"]};
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+`;
+
 type Props = {
   showOnlyNotes?: HalfTone[];
 };
@@ -81,13 +97,22 @@ type Props = {
 function NutNote({ note }: { note: Note }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
+  async function play() {
+    setIsPlaying(true);
+    await note.playAudio(0.3);
+    setIsPlaying(false);
+  }
+
   return (
     <NoteName
       isPlaying={isPlaying}
       onClick={async () => {
-        setIsPlaying(true);
-        await note.playAudio(0.3);
-        setIsPlaying(false);
+        await play();
+      }}
+      onMouseOver={async (event) => {
+        if (event.buttons === 1) {
+          await play();
+        }
       }}
     >
       {note.getRealHalfToneName()}
@@ -112,6 +137,11 @@ export function Guitar({ showOnlyNotes }: Props) {
 
   return (
     <Outer>
+      <Numbering>
+        {new Array(12).fill(0).map((n, index) => (
+          <Number>{index + 1}</Number>
+        ))}
+      </Numbering>
       <FretboardContainer>
         <Nut>
           {fretboard.strings.map((string, index) => (

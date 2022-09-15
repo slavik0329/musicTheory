@@ -49,6 +49,7 @@ const ToneBar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
 
   ${HalfToneItem}:last-child {
     border-right: 1px solid #ccc;

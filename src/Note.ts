@@ -9,10 +9,10 @@ import {
   VirtualTone,
 } from "./types.js";
 import { ToneGenerator } from "./ToneGenerator";
-// @ts-ignore
 import header from "waveheader";
-
 import { Buffer } from "buffer/";
+
+const context = new AudioContext();
 
 const SAMPLING_RATE = 44100;
 const allTones: Tone[] = ["A", "B", "C", "D", "E", "F", "G"];
@@ -184,8 +184,17 @@ export class Note {
   }
 
   async playAudio(lengthInSecs: number): Promise<void> {
-    const tone = this.createAudioTone(lengthInSecs);
-    await playPCMData(tone);
+    const sample = await fetch("/440.mp3")
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => context.decodeAudioData(buffer));
+
+    const source = context.createBufferSource();
+    source.buffer = sample;
+    source.connect(context.destination);
+    source.start(0);
+
+    const distanceFromConcertA = this.getHalfToneCountAwayAway(CONCERT_A_NOTE);
+    source.playbackRate.value = 2 ** (distanceFromConcertA / 12);
   }
 
   getVirtualHalfToneName(): VirtualTone {
@@ -307,7 +316,7 @@ export class Note {
 
   createScale(type: ScaleType): Chord {
     const configToUse = scaleConfigs.find(
-      (config) => config.type == type
+      (config) => config.type === type
     ) as ScaleConfig;
 
     const notes = configToUse.intervals.map((interval) =>
@@ -319,7 +328,7 @@ export class Note {
 
   createChord(type: ChordType): Chord {
     const configToUse = chordTypeConfigs.find(
-      (config) => config.type == type
+      (config) => config.type === type
     ) as ChordTypeConfig;
 
     const notes = configToUse.intervals.map((interval) =>
