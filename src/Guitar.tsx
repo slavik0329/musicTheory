@@ -7,6 +7,23 @@ import { Fret } from "./Fret";
 import { allHalfTones } from "./Note";
 
 const Container = styled.div`
+  display: inline-block;
+  background: #be975b url("/images/wood-pattern.png");
+  padding: 8px;
+  border-radius: 0 4px 4px 0;
+`;
+
+const FretboardContainer = styled.div`
+  display: flex;
+`;
+
+const Nut = styled.div`
+  border-radius: 4px 0 0 4px;
+  width: 20px;
+  background-color: ${theme.neutrals["cool-grey-700"]};
+`;
+
+const Outer = styled.div`
   margin-top: 20px;
 `;
 
@@ -17,7 +34,7 @@ const String = styled.div`
 const Anchors = styled.div`
   display: flex;
   margin-top: 4px;
-  margin-left: 20px;
+  margin-left: 28px;
 `;
 
 const Dot = styled.div`
@@ -29,13 +46,19 @@ const Dot = styled.div`
 `;
 
 const NoteName = styled.div`
-  position: relative;
-  text-align: left;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   z-index: 2;
-  color: ${theme.primary["indigo-600"]};
+  text-align: center;
+  color: #fff;
   font-weight: bold;
+  font-size: 14px;
   width: 20px;
+  height: 18px;
+  border-radius: 20px;
+  margin-top: 8px;
 `;
 
 const Anchor = styled.div`
@@ -65,28 +88,34 @@ export function Guitar({ showOnlyNotes }: Props) {
   }
 
   return (
-    <Container>
-      {fretboard.strings.map((string, stringIndex) => (
-        <String key={stringIndex}>
-          {string.notes.map((note, i) =>
-            i === 0 ? (
-              <NoteName onClick={() => note.playAudio(0.3)}>
-                {note.getRealHalfToneName()}
-              </NoteName>
-            ) : (
-              <Fret
-                onClick={() => note.playAudio(0.3)}
-                note={note}
-                hide={
-                  !!showOnlyNotes &&
-                  !showOnlyNotes.includes(note.getRealHalfToneName())
-                }
-              />
-            )
-          )}
-        </String>
-      ))}
-
+    <Outer>
+      <FretboardContainer>
+        <Nut>
+          {fretboard.strings.map((string) => (
+            <NoteName onClick={() => string.notes[0].playAudio(0.3)}>
+              {string.notes[0].getRealHalfToneName()}
+            </NoteName>
+          ))}
+        </Nut>
+        <Container>
+          {fretboard.strings.map((string, stringIndex) => (
+            <String key={stringIndex}>
+              {string.notes.map(
+                (note, i) =>
+                  i !== 0 && (
+                    <Fret
+                      note={note}
+                      hide={
+                        !!showOnlyNotes &&
+                        !showOnlyNotes.includes(note.getRealHalfToneName())
+                      }
+                    />
+                  )
+              )}
+            </String>
+          ))}
+        </Container>
+      </FretboardContainer>
       <Anchors>
         {anchors.map((anchor) => (
           <Anchor>
@@ -96,6 +125,6 @@ export function Guitar({ showOnlyNotes }: Props) {
           </Anchor>
         ))}
       </Anchors>
-    </Container>
+    </Outer>
   );
 }
