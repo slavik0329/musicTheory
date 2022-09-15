@@ -8,7 +8,7 @@ export class GuitarString {
     const rootNote = new Note(tuningItem.tone, tuningItem.octave);
     this.notes = [rootNote];
 
-    for (let i = 1; i < allHalfTones.length + 1; i++) {
+    for (let i = 1; i < 13; i++) {
       this.notes.push(rootNote.getRelativeHalfTone(i));
     }
   }
@@ -30,7 +30,7 @@ export class GuitarString {
         return `|-------|`;
       } else {
         return `|---${realHalfToneName}${
-          realHalfToneName.length == 1 ? "-" : ""
+          realHalfToneName.length === 1 ? "-" : ""
         }--|`;
       }
     });

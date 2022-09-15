@@ -75,7 +75,7 @@ export function Fret({ note, hide }: Props) {
 
   return (
     <FretContainer
-      onClick={async () => {
+      onMouseDown={async () => {
         setIsPlaying(true);
         await note.playAudio(0.3);
         setIsPlaying(false);
