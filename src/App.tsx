@@ -109,13 +109,13 @@ function App() {
           {allChords.map((chordType) => (
             <Block
               key={chordType}
-              onClick={() =>
+              onClick={() => {
+                const chord = note.createChord(chordType);
+                chord.play();
                 setShowOnlyNotes(
-                  note
-                    .createChord(chordType)
-                    .notes.map((note) => note.getRealHalfToneName())
-                )
-              }
+                  chord.notes.map((note) => note.getRealHalfToneName())
+                );
+              }}
             >
               <Title>
                 "{selectedHalfTone}" {chordType.replace("_", " ")} Chord

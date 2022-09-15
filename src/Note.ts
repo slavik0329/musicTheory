@@ -183,7 +183,7 @@ export class Note {
     });
   }
 
-  async playAudio(lengthInSecs: number): Promise<void> {
+  async playAudio(lengthInSecs?: number): Promise<void> {
     const sample = await fetch("/440.mp3")
       .then((response) => response.arrayBuffer())
       .then((buffer) => context.decodeAudioData(buffer));
@@ -376,16 +376,8 @@ export class Chord {
   }
 
   async play(lengthInSecs: number = 2) {
-    let allTones: number[] = [];
+    const promises = this.notes.map((note) => note.playAudio(lengthInSecs));
 
-    const firstTone = this.notes[0].createAudioTone(lengthInSecs);
-    const thirdTone = this.notes[1].createAudioTone(lengthInSecs);
-    const fifthTone = this.notes[2].createAudioTone(lengthInSecs);
-
-    for (let i = 0; i < SAMPLING_RATE * lengthInSecs; i++) {
-      allTones.push(firstTone[i] + thirdTone[i] + fifthTone[i]);
-    }
-
-    await playPCMData(allTones);
+    await Promise.all(promises);
   }
 }
