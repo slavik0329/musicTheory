@@ -8,7 +8,7 @@ export class GuitarString {
     const rootNote = new Note(tuningItem.tone, tuningItem.octave);
     this.notes = [rootNote];
 
-    for (let i = 1; i < 13; i++) {
+    for (let i = 1; i < 16; i++) {
       this.notes.push(rootNote.getRelativeHalfTone(i));
     }
   }

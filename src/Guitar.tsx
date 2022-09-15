@@ -125,8 +125,8 @@ export function Guitar({ showOnlyNotes }: Props) {
 
   let anchors: string[] = [];
 
-  for (let i = 0; i < allHalfTones.length; i++) {
-    if ([2, 4, 6, 8].includes(i)) {
+  for (let i = 0; i < 15; i++) {
+    if ([2, 4, 6, 8, 14].includes(i)) {
       anchors.push("x");
     } else if ([11].includes(i)) {
       anchors.push("XX");
@@ -138,7 +138,7 @@ export function Guitar({ showOnlyNotes }: Props) {
   return (
     <Outer>
       <Numbering>
-        {new Array(12).fill(0).map((n, index) => (
+        {new Array(15).fill(0).map((n, index) => (
           <Number>{index + 1}</Number>
         ))}
       </Numbering>
