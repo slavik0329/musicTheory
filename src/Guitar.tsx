@@ -91,8 +91,11 @@ export function Guitar({ showOnlyNotes }: Props) {
     <Outer>
       <FretboardContainer>
         <Nut>
-          {fretboard.strings.map((string) => (
-            <NoteName onClick={() => string.notes[0].playAudio(0.3)}>
+          {fretboard.strings.map((string, index) => (
+            <NoteName
+              onClick={() => string.notes[0].playAudio(0.3)}
+              key={index}
+            >
               {string.notes[0].getRealHalfToneName()}
             </NoteName>
           ))}
@@ -104,6 +107,7 @@ export function Guitar({ showOnlyNotes }: Props) {
                 (note, i) =>
                   i !== 0 && (
                     <Fret
+                      key={i}
                       note={note}
                       hide={
                         !!showOnlyNotes &&
@@ -117,10 +121,10 @@ export function Guitar({ showOnlyNotes }: Props) {
         </Container>
       </FretboardContainer>
       <Anchors>
-        {anchors.map((anchor) => (
-          <Anchor>
-            {new Array(anchor.length).fill(1).map((dot) => (
-              <Dot />
+        {anchors.map((anchor, i) => (
+          <Anchor key={i}>
+            {new Array(anchor.length).fill(1).map((dot, i) => (
+              <Dot key={i} />
             ))}
           </Anchor>
         ))}

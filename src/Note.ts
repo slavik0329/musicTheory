@@ -185,7 +185,6 @@ export class Note {
 
   async playAudio(lengthInSecs: number): Promise<void> {
     const tone = this.createAudioTone(lengthInSecs);
-    console.log({ tone });
     await playPCMData(tone);
   }
 

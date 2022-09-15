@@ -107,6 +107,7 @@ function App() {
         <Left>
           {allChords.map((chordType) => (
             <Block
+              key={chordType}
               onClick={() =>
                 setShowOnlyNotes(
                   note
@@ -131,6 +132,7 @@ function App() {
         <Right>
           {allScales.map((scaleType) => (
             <Block
+              key={scaleType}
               onClick={() =>
                 setShowOnlyNotes(
                   note
