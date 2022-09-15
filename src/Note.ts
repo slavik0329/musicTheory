@@ -23,20 +23,31 @@ type ChordTypeConfig = {
   intervals: number[];
 };
 
+export type ChordType =
+  | "Minor"
+  | "Major"
+  | "Diminished"
+  | "Major_7"
+  | "Minor_7";
+export const allChords: ChordType[] = [
+  "Major",
+  "Major_7",
+  "Minor",
+  "Minor_7",
+  "Diminished",
+];
+
 export type ScaleType =
   | "Major"
   | "Minor"
   | "Pentatonic_Major"
   | "Pentatonic_Minor";
-export type ChordType = "Minor" | "Major" | "Diminished";
 export const allScales: ScaleType[] = [
   "Major",
   "Minor",
   "Pentatonic_Major",
   "Pentatonic_Minor",
 ];
-
-export const allChords: ChordType[] = ["Major", "Minor", "Diminished"];
 
 type ScaleConfig = {
   type: ScaleType;
@@ -71,8 +82,16 @@ export const chordTypeConfigs: ChordTypeConfig[] = [
     intervals: [0, 4, 7],
   },
   {
+    type: "Major_7",
+    intervals: [0, 4, 7, 11],
+  },
+  {
     type: "Minor",
     intervals: [0, 3, 7],
+  },
+  {
+    type: "Minor_7",
+    intervals: [0, 3, 7, 10],
   },
   {
     type: "Diminished",
@@ -342,6 +361,7 @@ export class Note {
     const first = new Note(this.getRealHalfToneName(), this.octave);
     const thirdTone = first.getRelativeTone(2);
     const fifthTone = first.getRelativeTone(4);
+    const seventhTone = first.getRelativeTone(6);
 
     const relativeThirdHalfToneName = this.getRelativeHalfToneName(
       type === "Minor" || type === "Diminished" ? 3 : 4,
@@ -352,10 +372,22 @@ export class Note {
       fifthTone
     );
 
+    const relativeSeventhHalfToneName = this.getRelativeHalfToneName(
+      11,
+      seventhTone
+    );
+
     const third = new Note(relativeThirdHalfToneName, this.octave);
     const fifth = new Note(relativeFifthHalfToneName, this.octave);
+    const seventh = new Note(relativeSeventhHalfToneName, this.octave);
 
-    return new Chord([first, third, fifth]);
+    let notes = [first, third, fifth];
+
+    if (type === "Major_7") {
+      notes.push(seventh);
+    }
+
+    return new Chord(notes);
   }
 }
 
