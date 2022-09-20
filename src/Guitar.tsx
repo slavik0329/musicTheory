@@ -138,8 +138,8 @@ export function Guitar({ showOnlyNotes }: Props) {
   return (
     <Outer>
       <Numbering>
-        {new Array(15).fill(0).map((n, index) => (
-          <Number>{index + 1}</Number>
+        {new Array(17).fill(0).map((n, index) => (
+          <Number key={index}>{index + 1}</Number>
         ))}
       </Numbering>
       <FretboardContainer>

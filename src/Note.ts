@@ -38,13 +38,8 @@ export type ScaleType =
   | "Major"
   | "Minor"
   | "Pentatonic_Major"
-  | "Pentatonic_Minor";
-export const allScales: ScaleType[] = [
-  "Major",
-  "Minor",
-  "Pentatonic_Major",
-  "Pentatonic_Minor",
-];
+  | "Pentatonic_Minor"
+  | "Mixolydian";
 
 type ScaleConfig = {
   type: ScaleType;
@@ -67,11 +62,16 @@ export const scaleConfigs: ScaleConfig[] = [
   },
   {
     type: "Pentatonic_Minor",
-
     // R, m3, P4, P5, m7
     intervals: [0, 3, 5, 7, 10],
   },
+  {
+    type: "Mixolydian",
+    intervals: [0, 2, 4, 5, 7, 9, 10, 12],
+  },
 ];
+
+export const allScales = scaleConfigs.map((scale) => scale.type);
 
 export const chordTypeConfigs: ChordTypeConfig[] = [
   {

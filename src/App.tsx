@@ -134,13 +134,12 @@ function App() {
           {allScales.map((scaleType) => (
             <Block
               key={scaleType}
-              onClick={() =>
+              onClick={() => {
+                const chord = note.createScale(scaleType);
                 setShowOnlyNotes(
-                  note
-                    .createScale(scaleType)
-                    .notes.map((note) => note.getRealHalfToneName())
-                )
-              }
+                  chord.notes.map((note) => note.getRealHalfToneName())
+                );
+              }}
             >
               <Title>
                 "{selectedHalfTone}" {scaleType.replace("_", " ")} Scale
