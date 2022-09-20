@@ -127,7 +127,7 @@ export function Guitar({ showOnlyNotes }: Props) {
 
   for (let i = 0; i < 15; i++) {
     if ([2, 4, 6, 8, 14].includes(i)) {
-      anchors.push("x");
+      anchors.push("X");
     } else if ([11].includes(i)) {
       anchors.push("XX");
     } else {

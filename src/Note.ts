@@ -295,10 +295,6 @@ export class Note {
     }
   }
 
-  display() {
-    console.log(this.getVirtualHalfToneName());
-  }
-
   /** Returns new Note (halfTone) with given relative adjustment */
   getRelativeHalfTone(number: number, withOctave?: boolean): Note {
     const newHalfTone = this.getRelativeHalfToneName(number, undefined);
@@ -423,12 +419,6 @@ export class Chord {
 
   constructor(notes: Note[]) {
     this.notes = notes;
-  }
-
-  display() {
-    this.notes.forEach((note) => {
-      note.display();
-    });
   }
 
   async play(lengthInSecs: number = 2) {
