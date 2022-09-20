@@ -1,7 +1,6 @@
 import { DefaultTheme } from "styled-components";
 
 export const theme: DefaultTheme = {
-  // Primary
   primary: {
     "indigo-020": "hsl(221deg 68% 97%)",
     "indigo-050": "#E0E8F9",

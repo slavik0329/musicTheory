@@ -4,7 +4,7 @@ import { theme } from "./theme";
 import { FretBoard } from "./FretBoard";
 import { HalfTone } from "./types";
 import { Fret } from "./Fret";
-import { allHalfTones, Note } from "./Note";
+import { Note } from "./Note";
 
 const Container = styled.div`
   display: inline-block;
