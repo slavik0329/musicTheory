@@ -2,10 +2,18 @@ import { Buffer } from "buffer";
 import React, { useState } from "react";
 import "./App.css";
 import styled from "styled-components";
-import { allChords, allHalfTones, allScales, Note } from "./Note";
+import {
+  allChords,
+  allHalfTones,
+  allScales,
+  ChordType,
+  Note,
+  ScaleType,
+} from "./Note";
 import { theme } from "./theme";
-import { HalfTone } from "./types";
+import { HalfTone, VirtualTone } from "./types";
 import { Guitar } from "./Guitar";
+import { Chord, Scale } from "@tonaljs/tonal";
 global.Buffer = Buffer;
 
 const Outer = styled.div`
@@ -79,6 +87,22 @@ const ScaleItem = styled.div`
   color: ${theme.neutrals["cool-grey-500"]};
 `;
 
+function getTonalScale(note: Note, scaleType: ScaleType): VirtualTone[] {
+  return Scale.get(
+    `${note.getRealHalfToneName().toLowerCase()} ${scaleType
+      .replace("_", " ")
+      .toLowerCase()}`
+  ).notes.map((noteName) => noteName) as VirtualTone[];
+}
+
+function getTonalChord(note: Note, chordType: ChordType): VirtualTone[] {
+  return Chord.get(
+    `${note.getRealHalfToneName().toLowerCase()} ${chordType
+      .replace("_", " ")
+      .toLowerCase()}`
+  ).notes.map((noteName) => noteName) as VirtualTone[];
+}
+
 function App() {
   const [selectedHalfTone, setSelectedHalfTone] = useState<HalfTone>("C");
   const [showOnlyNotes, setShowOnlyNotes] = useState<HalfTone[] | undefined>([
@@ -121,10 +145,8 @@ function App() {
                 "{selectedHalfTone}" {chordType.replace("_", " ")} Chord
               </Title>
               <NoteBox>
-                {note.createTriad(chordType).notes.map((chordItem, i) => (
-                  <ScaleItem key={i}>
-                    {chordItem.getVirtualHalfToneName()}
-                  </ScaleItem>
+                {getTonalChord(note, chordType).map((chordItem, i) => (
+                  <ScaleItem key={i}>{chordItem}</ScaleItem>
                 ))}
               </NoteBox>
             </Block>
@@ -145,10 +167,8 @@ function App() {
                 "{selectedHalfTone}" {scaleType.replace("_", " ")} Scale
               </Title>
               <NoteBox>
-                {note.createScale(scaleType).notes.map((scaleItem, i) => (
-                  <ScaleItem key={i}>
-                    {scaleItem.getRealHalfToneName()}
-                  </ScaleItem>
+                {getTonalScale(note, scaleType).map((noteName, i) => (
+                  <ScaleItem key={i}>{noteName}</ScaleItem>
                 ))}
               </NoteBox>
             </Block>

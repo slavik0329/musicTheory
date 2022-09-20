@@ -30,15 +30,15 @@ export type ChordType =
   | "Major_Seventh"
   | "Minor_Seventh"
   | "Dominant_Seventh"
-  | "Sus_2"
-  | "Sus_4"
+  | "Sus2"
+  | "Sus4"
   | "Augmented";
 
 export type ScaleType =
   | "Major"
   | "Minor"
-  | "Pentatonic_Major"
-  | "Pentatonic_Minor"
+  | "Major_Pentatonic"
+  | "Minor_Pentatonic"
   | "Mixolydian";
 
 type ScaleConfig = {
@@ -57,11 +57,11 @@ export const scaleConfigs: ScaleConfig[] = [
   },
   {
     // R, M2, M3, P5, M6
-    type: "Pentatonic_Major",
+    type: "Major_Pentatonic",
     intervals: [0, 2, 4, 7, 9],
   },
   {
-    type: "Pentatonic_Minor",
+    type: "Minor_Pentatonic",
     // R, m3, P4, P5, m7
     intervals: [0, 3, 5, 7, 10],
   },
@@ -99,11 +99,11 @@ export const chordTypeConfigs: ChordTypeConfig[] = [
     intervals: [0, 4, 7, 10],
   },
   {
-    type: "Sus_2",
+    type: "Sus2",
     intervals: [0, 2, 7],
   },
   {
-    type: "Sus_4",
+    type: "Sus4",
     intervals: [0, 5, 7],
   },
   {
@@ -374,7 +374,7 @@ export class Note {
   createTriad(type: ChordType): Chord {
     const first = new Note(this.getRealHalfToneName(), this.octave);
     const thirdTone = first.getRelativeTone(
-      type === "Sus_2" ? 1 : type === "Sus_4" || type === "Augmented" ? 3 : 2
+      type === "Sus2" ? 1 : type === "Sus4" || type === "Augmented" ? 3 : 2
     );
     const fifthTone = first.getRelativeTone(4);
     const seventhTone = first.getRelativeTone(6);
