@@ -12,7 +12,12 @@ import { ToneGenerator } from "./ToneGenerator";
 import header from "waveheader";
 import { Buffer } from "buffer/";
 
-const context = new AudioContext();
+const getAudioContext = () => {
+  if (typeof AudioContext !== 'undefined') {
+    return new AudioContext();
+  }
+  return null;
+};
 
 const SAMPLING_RATE = 44100;
 const allTones: Tone[] = ["A", "B", "C", "D", "E", "F", "G"];
@@ -218,6 +223,9 @@ export class Note {
   }
 
   async playAudio(lengthInSecs?: number): Promise<void> {
+    const context = getAudioContext();
+    if (!context) return;
+    
     const sample = await fetch("/440.mp3")
       .then((response) => response.arrayBuffer())
       .then((buffer) => context.decodeAudioData(buffer));
